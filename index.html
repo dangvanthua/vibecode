@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffdde8" />
+  <title>Khu Vườn Hoa Hồng 20/10 🌹 Chúc Mừng Ngày Phụ Nữ Việt Nam</title>
+  <meta name="description" content="Chúc mọi người ngày Phụ Nữ Việt Nam 20/10 thật rạng rỡ! Ngắm cây hoa hồng nở rộ và chọn 3 món yêu thích nhất." />
+
+  <!-- Open Graph / Zalo / Messenger Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="🌹 Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10 — Khu Vườn Hoa Hồng" />
+  <meta property="og:description" content="Mời mở thiệp hoa hồng 20/10 và tự tay chọn 3 món yêu thích nhất nhé!" />
+
+  <!-- Google Fonts: Vietnamese Full Support -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Rose SVG Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌹</text></svg>" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- ====================================================================
+       SCENIC GARDEN LANDSCAPE BACKGROUND (SUNSET SKY, CLOUDS, HILLS)
+       ==================================================================== -->
+  <div class="scenic-backdrop" aria-hidden="true">
+    <div class="sky-sun-halo"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+
+    <!-- Layered Romantic Hills at the Bottom -->
+    <svg class="landscape-hills" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hillFar" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#f9a8c4" stop-opacity="0.55" />
+          <stop offset="100%" stop-color="#f4729b" stop-opacity="0.8" />
+        </linearGradient>
+        <linearGradient id="hillMid" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ec5b87" stop-opacity="0.7" />
+          <stop offset="100%" stop-color="#be185d" stop-opacity="0.9" />
+        </linearGradient>
+        <linearGradient id="hillFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#3b6e4c" />
+          <stop offset="100%" stop-color="#1b3b27" />
+        </linearGradient>
+      </defs>
+      <path d="M0,192 C320,110 640,240 960,160 C1200,100 1360,150 1440,170 L1440,320 L0,320 Z" fill="url(#hillFar)" />
+      <path d="M0,225 C280,260 520,150 880,210 C1160,255 1320,195 1440,215 L1440,320 L0,320 Z" fill="url(#hillMid)" />
+      <path d="M0,268 C420,220 1020,220 1440,268 L1440,320 L0,320 Z" fill="url(#hillFront)" />
+    </svg>
+  </div>
+
+  <!-- Ambient Falling Rose Petals Canvas -->
+  <canvas id="rose-canvas" aria-hidden="true"></canvas>
+
+  <!-- ====================================================================
+       20/10 SKY AIRPLANE TOWING FLUTTERING BANNER
+       ==================================================================== -->
+  <div class="sky-airplane-track" id="sky-airplane-track" aria-hidden="true">
+    <div class="airplane-assembly">
+      <!-- Fluttering Banner Towed Behind Plane -->
+      <div class="towed-banner">
+        <div class="banner-tail-notch"></div>
+        <div class="banner-cloth">
+          <span class="banner-sparkle">🌹</span>
+          <span class="banner-text" id="airplane-banner-text">CHÚC MỪNG NGÀY PHỤ NỮ VIỆT NAM 20/10 • CHÚC MỌI NGƯỜI LUÔN RẠNG RỠ</span>
+          <span class="banner-sparkle">🌹</span>
+        </div>
+      </div>
+
+      <!-- Tow Ropes -->
+      <div class="tow-ropes"></div>
+
+      <!-- Detailed Red/Pink Vintage Biplane SVG -->
+      <div class="biplane-wrap">
+        <svg class="biplane-svg" viewBox="0 0 150 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="plane-hearts">
+            <path d="M12 42 C10 39, 6 39, 6 43 C6 46, 12 50, 12 50 C12 50, 18 46, 18 43 C18 39, 14 39, 12 42 Z" fill="#FFF0F5" opacity="0.85" />
+          </g>
+          <path d="M24 38 L34 18 L48 36 Z" fill="#E11D48" />
+          <path d="M22 40 L36 36 L34 48 Z" fill="#BE123C" />
+          <path d="M26 38 C50 32, 95 30, 122 38 C130 40, 130 50, 122 52 C92 56, 52 52, 26 44 Z" fill="#FFF1F2" stroke="#E11D48" stroke-width="2" />
+          <path d="M32 43 L122 44" stroke="#F43F5E" stroke-width="4" stroke-linecap="round" />
+          <path d="M68 33 C74 24, 88 24, 92 33 Z" fill="#BAE6FD" stroke="#E11D48" stroke-width="1.5" />
+          <rect x="64" y="18" width="44" height="6" rx="3" fill="#E11D48" />
+          <rect x="60" y="50" width="46" height="6" rx="3" fill="#BE123C" />
+          <line x1="74" y1="24" x2="72" y2="50" stroke="#9F1239" stroke-width="2" />
+          <line x1="98" y1="24" x2="96" y2="50" stroke="#9F1239" stroke-width="2" />
+          <line x1="88" y1="54" x2="94" y2="66" stroke="#881337" stroke-width="2.5" />
+          <circle cx="95" cy="67" r="6" fill="#4C0519" stroke="#FDE68A" stroke-width="2" />
+          <path d="M122 36 C132 37, 134 51, 122 52 Z" fill="#E11D48" />
+          <ellipse class="plane-propeller" cx="133" cy="44" rx="2.5" ry="18" fill="#FEF3C7" opacity="0.85" />
+          <circle cx="133" cy="44" r="3.5" fill="#D97706" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       FLOATING TOP NAVIGATION BAR (SINGLE-LINE MOBILE OPTIMIZED)
+       ==================================================================== -->
+  <header class="top-nav">
+    <button type="button" class="brand-pill" id="btn-home-reset" title="Về Khu Vườn Hoa Hồng 20/10">
+      <span class="brand-dot"></span>
+      <span class="brand-text" id="nav-occasion-text">HOA HỒNG • 20/10</span>
+    </button>
+
+    <div class="nav-actions">
+      <!-- Nút Xem Thử Giao Diện Sau 20/10 (Chỉ hiện cho người tạo) -->
+      <button type="button" class="nav-btn creator-only-btn" id="btn-preview-expired" title="Xem thử màn hình hài hước khi qua ngày 20/10">
+        <span>😂</span>
+        <span class="btn-label">Sau 20/10</span>
+      </button>
+
+      <!-- Nút Xem Kết Quả Đặt Món (Chỉ hiện cho người tạo, tự ẩn khi gửi link ?c=...) -->
+      <button type="button" class="nav-btn creator-only-btn" id="btn-open-orders" title="Xem người ấy đã chọn món gì">
+        <span>📬</span>
+        <span class="btn-label">Đơn đặt</span>
+      </button>
+
+      <!-- Nút Cấu Hình Menu (Chỉ hiện cho người tạo, tự ẩn khi gửi link ?c=...) -->
+      <button type="button" class="nav-btn creator-only-btn" id="btn-open-customizer" title="Cấu hình lời chúc &amp; danh sách món">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="btn-label">Cấu hình</span>
+      </button>
+
+      <button type="button" class="nav-btn music-btn" id="btn-toggle-audio" aria-label="Bật/Tắt nhạc" title="Bật/Tắt giai điệu hộp nhạc">
+        <span class="music-bars" id="music-bars">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="btn-label" id="audio-label">Nhạc</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Application Shell -->
+  <main class="app-container">
+
+    <!-- ==================================================================
+         STAGE 1: CONTINUOUS GROWING ROSE TREE SCENE & GREETING CARD
+         ================================================================== -->
+    <section id="stage-intro" class="stage active" aria-label="Khu Vườn Hoa Hồng &amp; Thiệp 20/10">
+      <div class="garden-stage-layout">
+
+        <!-- Hero Heading Floating Softly in the Sky -->
+        <div class="garden-sky-header">
+          <div class="sky-occasion-pill">✨ HAPPY VIETNAMESE WOMEN'S DAY 20/10 ✨</div>
+          <h1 class="intro-title" id="intro-hero-title">Khu Vườn Hoa Hồng &amp; Quà Tặng 20/10</h1>
+          <p class="intro-recipient">
+            Gửi tặng: <strong id="intro-recipient-name">Mọi người</strong>
+          </p>
+        </div>
+
+        <!-- Greeting Card with Semi-Transparent Blooming Rose Tree in Background -->
+        <div class="letter-card" id="letter-card">
+          <div class="letter-paper" id="rose-hero-showcase">
+            <!-- Semi-transparent growing rose tree canvas inside the white card background -->
+            <canvas id="rose-tree-canvas" class="card-rose-bg-canvas" aria-hidden="true"></canvas>
+
+            <!-- Foreground Greeting Content -->
+            <div class="letter-content-layer">
+              <div class="letter-ornament-top">
+                <span>🌹</span>
+                <span class="ornament-title">THIỆP CHÚC MỪNG NGÀY 20/10</span>
+                <span>🌹</span>
+              </div>
+
+              <h2 class="letter-greeting" id="letter-greeting">
+                Chúc mọi người ngày 20/10 thật rạng rỡ &amp; ngập tràn niềm vui!
+              </h2>
+
+              <p class="letter-body" id="letter-body"></p>
+
+              <div class="letter-signature-wrap">
+                <p class="letter-signature" id="letter-signature">
+                  Chúc một ngày 20/10 thật ngọt ngào &amp; nhiều niềm vui 🌹
+                </p>
+                <p class="letter-sender" id="letter-sender-name">— Lời chúc 20/10 🌹</p>
+              </div>
+
+              <div class="gift-token-announcement">
+                <div class="token-header-row">
+                  <div class="token-roses" id="intro-token-roses">
+                    <span class="token-rose-item">🌹</span>
+                    <span class="token-rose-item">🌹</span>
+                    <span class="token-rose-item">🌹</span>
+                  </div>
+                  <span class="token-badge-pill">CHỌN 1 – 3 MÓN</span>
+                </div>
+                <p class="token-desc" id="intro-token-desc">
+                  Mời mọi người tự tay chọn <strong>từ 1 đến tối đa 3 món yêu thích nhất</strong> ở bên dưới nhé!
+                </p>
+              </div>
+
+              <button type="button" class="primary-cta-btn" id="btn-enter-boutique">
+                <span id="btn-enter-boutique-text">Chọn Món Yêu Thích</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         STAGE 2: SPACIOUS MOBILE MENU BOUTIQUE (CHOOSE 1 UP TO 3 ITEMS)
+         ================================================================== -->
+    <section id="stage-boutique" class="stage" aria-label="Menu 20/10 - Chọn tối đa 3 món">
+      <div class="boutique-header">
+        <div class="boutique-step-pill">🌸 MENU ĐỒ UỐNG &amp; QUÀ TẶNG 20/10 🌸</div>
+        <h2 class="boutique-title">
+          Chọn Món Yêu Thích <span class="highlight-pink" id="boutique-max-label">(Tối Đa 3 Món)</span>
+        </h2>
+        <p class="boutique-subtitle" id="boutique-subtitle-text">
+          Chọn <strong>1 món là có thể chốt đơn ngay</strong>, hoặc chọn tối đa <strong>3 món</strong> bạn thích nhé!
+        </p>
+
+        <!-- Spacious Category Tabs & Random Button -->
+        <div class="boutique-toolbar">
+          <div class="category-tabs" id="category-tabs" role="tablist">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+          <button type="button" class="lucky-pick-btn" id="btn-random-pick" title="Gợi ý ngẫu nhiên">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+            <span>Gợi ý ngẫu nhiên</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Spacious Menu Cards Grid -->
+      <div class="gifts-grid" id="gifts-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Generous Bottom Spacer -->
+      <div class="dock-spacer"></div>
+
+      <!-- MODERN MOBILE BOTTOM CART SHEET -->
+      <div class="selection-dock" id="selection-dock">
+        <div class="dock-inner" id="dock-inner">
+          <!-- Selected Items Drawer (Auto-expands when >= 1 item is selected) -->
+          <div class="dock-selected-drawer hidden" id="dock-selected-drawer">
+            <div class="dock-drawer-header">
+              <span class="dock-drawer-title">🌹 Món bạn đã chọn</span>
+              <button type="button" class="dock-clear-btn" id="btn-clear-selection">Xoá hết</button>
+            </div>
+            <div class="rose-slots" id="rose-slots">
+              <!-- Rendered dynamically as sleek mobile cart pills -->
+            </div>
+          </div>
+
+          <!-- Always-visible Bottom Action Row -->
+          <div class="dock-main-row">
+            <div class="dock-cart-summary">
+              <div class="dock-bag-icon-wrap">
+                <span class="dock-bag-emoji">🌹</span>
+                <span class="dock-counter" id="dock-counter">0/3</span>
+              </div>
+              <div class="dock-summary-text">
+                <strong class="dock-status-label" id="dock-status-label">Chưa chọn món nào</strong>
+                <span class="dock-status-sub" id="dock-status-sub">Chọn từ 1 đến 3 món</span>
+              </div>
+            </div>
+
+            <button type="button" class="confirm-gifts-btn" id="btn-confirm-gifts" disabled>
+              <span id="confirm-btn-text">Chọn món</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         STAGE 3: MODERN MOBILE ORDER SUMMARY & CUSTOMIZATION CARD
+         ================================================================== -->
+    <section id="stage-voucher" class="stage" aria-label="Đơn Quà Tặng 20/10 Đã Chọn">
+      <div class="voucher-stage-header">
+        <div class="order-success-badge">
+          <span class="success-check-icon">✓</span>
+          <span>ĐÃ GHI NHẬN ĐƠN QUÀ 20/10</span>
+        </div>
+        <h2 class="voucher-stage-title">Món Bạn Đã Chọn</h2>
+        <p class="voucher-stage-desc" id="voucher-sync-status-desc">
+          Lựa chọn của bạn đã được lưu lại! Bạn có thể chọn nhanh mức đường/đá hoặc nhắn thêm lời nhắn bên dưới nhé.
+        </p>
+      </div>
+
+      <!-- Modern Mobile Order Card -->
+      <div class="voucher-wrapper">
+        <article class="voucher-ticket" id="voucher-ticket">
+
+          <!-- Top Order Meta Bar -->
+          <div class="order-card-topbar">
+            <div class="order-card-brand">
+              <span class="order-rose-badge">🌹 20/10</span>
+              <div>
+                <h3 class="ticket-main-title">PHIẾU ĐẶT MÓN 20/10</h3>
+                <p class="ticket-sub-title" id="ticket-timestamp">--:-- • 20/10</p>
+              </div>
+            </div>
+            <span class="ticket-date-code" id="ticket-code">#2010-ROSE</span>
+          </div>
+
+          <!-- Compact Recipient & Sender Strip -->
+          <div class="ticket-people-strip">
+            <div class="strip-col">
+              <span class="strip-label">Dành tặng</span>
+              <strong class="strip-val" id="ticket-recipient">Mọi người</strong>
+            </div>
+            <div class="strip-divider"></div>
+            <div class="strip-col strip-col-right">
+              <span class="strip-label">Gửi từ</span>
+              <strong class="strip-val" id="ticket-sender">Lời chúc 20/10 🌹</strong>
+            </div>
+          </div>
+
+          <!-- Selected Items Section -->
+          <div class="selected-items-section">
+            <div class="selected-section-header">
+              <div class="selected-header-left">
+                <span class="divider-icon" id="ticket-divider-label">MÓN ĐÃ CHỌN</span>
+                <span class="selected-count-pill" id="ticket-count-pill">1 món</span>
+              </div>
+              <button type="button" class="change-items-inline-btn" id="btn-back-to-boutique">
+                + Đổi / Thêm món
+              </button>
+            </div>
+
+            <div class="ticket-gifts-list" id="ticket-gifts-list">
+              <!-- Populated dynamically as modern mobile product cards -->
+            </div>
+          </div>
+
+          <!-- Quick Mobile Note & Drink Customization -->
+          <div class="ticket-note-section">
+            <div class="ticket-input-group">
+              <label for="orderer-name-input" class="note-label">👤 Tên của bạn (Để người tặng biết ai đặt):</label>
+              <input
+                type="text"
+                id="orderer-name-input"
+                class="note-input"
+                maxlength="60"
+                placeholder="Nhập tên hoặc biệt danh của bạn..."
+              />
+            </div>
+
+            <div class="ticket-input-group">
+              <label for="recipient-note-input" class="note-label">📝 Ghi chú (Chạm nhanh hoặc tự gõ):</label>
+              <div class="quick-note-chips" id="quick-note-chips">
+                <button type="button" class="quick-chip" data-note="Size L">Size L</button>
+                <button type="button" class="quick-chip" data-note="70% đường">70% đường</button>
+                <button type="button" class="quick-chip" data-note="50% đường">50% đường</button>
+                <button type="button" class="quick-chip" data-note="Ít đá">Ít đá</button>
+                <button type="button" class="quick-chip" data-note="Đá riêng">Đá riêng</button>
+                <button type="button" class="quick-chip" data-note="Cảm ơn nhiều nhé! 🌹">Cảm ơn nhé 🌹</button>
+              </div>
+              <input
+                type="text"
+                id="recipient-note-input"
+                class="note-input"
+                maxlength="110"
+                placeholder="VD: Size L, 50% đường, ít đá..."
+                value="Size L, 70% đường, ít đá. Cảm ơn nhiều nhé! 🌹"
+              />
+            </div>
+
+            <button type="button" class="send-note-btn" id="btn-send-order-note">
+              <span>💝 Lưu &amp; Gửi Ghi Chú Đơn Hàng</span>
+            </button>
+          </div>
+
+          <div class="ticket-footer">
+            <div class="ticket-verified-row">
+              <span class="verified-dot"></span>
+              <span class="barcode-text">Đơn quà 20/10 đã được đồng bộ tự động</span>
+            </div>
+            <span class="stamp-pill">HAPPY 20/10 🌹</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Single-Line Mobile Voucher Action Buttons -->
+      <div class="voucher-actions">
+        <button type="button" class="primary-cta-btn download-ticket-btn" id="btn-download-voucher">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Tải Ảnh Đơn Quà 20/10</span>
+        </button>
+
+        <div class="secondary-actions-row">
+          <button type="button" class="secondary-btn" id="btn-share-voucher">
+            <span>📲 Chia sẻ phiếu</span>
+          </button>
+          <button type="button" class="secondary-btn" id="btn-copy-summary">
+            <span>📋 Sao chép đơn</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         STAGE 4: POST-20/10 EXPIRED MEME SCREEN ("QUA NGÀY 20/10 MỚI TÌM TỚI TÔI SAO")
+         ================================================================== -->
+    <section id="stage-expired" class="stage" aria-label="Đã qua ngày 20/10">
+      <div class="expired-stage-card">
+        <div class="expired-status-pill">
+          <span>🥀 QUẦY QUÀ 20/10 ĐÃ ĐÓNG CỬA 🥀</span>
+        </div>
+
+        <h2 class="expired-main-title" id="expired-main-title">
+          Qua ngày 20/10 mới tìm tới tôi sao?! 🤨💅
+        </h2>
+
+        <p class="expired-subtitle">
+          Khu vườn hoa hồng chỉ mở cửa nhận đơn đúng dịp <strong>20/10</strong> thôi nha! Giờ hoa héo rụng cánh, máy bay hạ cánh, chủ vườn đi ngủ rồi 😌
+        </p>
+
+        <!-- HILARIOUS VIETNAMESE MEME POSTER FRAME -->
+        <div class="meme-poster-frame" id="meme-poster-frame">
+          <div class="meme-top-caption" id="meme-top-caption">
+            NGÀY 20/10 MỞ QUẦY THÌ KHÔNG THẤY ĐÂU...
+          </div>
+
+          <div class="meme-art-stage">
+            <!-- Red Rubber Stamp -->
+            <div class="meme-rubber-stamp">TRỄ HẠN 20/10!</div>
+
+            <!-- Floating Question Marks & Emojis -->
+            <span class="meme-float-tag tag-q1">??? 🤨</span>
+            <span class="meme-float-tag tag-q2">🥀 Hết lễ rồi!</span>
+
+            <!-- Expressive Sassy Side-Eye Cat ("Mèo Lườm") Holding Withered Rose & Closed Sign SVG -->
+            <svg class="meme-cat-svg" viewBox="0 0 360 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Dramatic Meme Sunburst / Halftone Background -->
+              <rect width="360" height="250" rx="14" fill="#FFF1F5" />
+              <circle cx="180" cy="140" r="115" fill="#FFE4EC" />
+              <circle cx="180" cy="140" r="82" fill="#FECDD3" opacity="0.55" />
+
+              <!-- Calendar on Left Wall: "21/10" -->
+              <g transform="translate(22, 26) rotate(-6)">
+                <rect x="0" y="0" width="68" height="74" rx="10" fill="#FFFFFF" stroke="#9F1239" stroke-width="2.5" />
+                <path d="M0 10C0 4.5 4.5 0 10 0H58C63.5 0 68 4.5 68 10V22H0V10Z" fill="#E11D48" />
+                <circle cx="18" cy="11" r="3" fill="#FFF1F2" />
+                <circle cx="50" cy="11" r="3" fill="#FFF1F2" />
+                <text x="34" y="16" text-anchor="middle" fill="#FFFFFF" font-family="Be Vietnam Pro, sans-serif" font-size="9" font-weight="800">THÁNG 10</text>
+                <text x="34" y="49" text-anchor="middle" fill="#881337" font-family="Be Vietnam Pro, sans-serif" font-size="22" font-weight="800">21+</text>
+                <text x="34" y="65" text-anchor="middle" fill="#E11D48" font-family="Be Vietnam Pro, sans-serif" font-size="8.5" font-weight="700">HẾT 20/10</text>
+              </g>
+
+              <!-- Sassy Side-Eye Cat ("Mèo Lườm phán xét") -->
+              <g id="meme-cat-character" transform="translate(96, 36)">
+                <!-- Cat Ears -->
+                <path d="M26 58 L14 14 L60 36 Z" fill="#F8FAFC" stroke="#334155" stroke-width="3.2" stroke-linejoin="round" />
+                <path d="M24 48 L19 22 L48 36 Z" fill="#FDA4AF" />
+                <path d="M138 58 L150 14 L104 36 Z" fill="#F8FAFC" stroke="#334155" stroke-width="3.2" stroke-linejoin="round" />
+                <path d="M140 48 L145 22 L116 36 Z" fill="#FDA4AF" />
+
+                <!-- Cat Chubby Head & Body -->
+                <path d="M20 198 C18 138, 34 118, 82 118 C130 118, 146 138, 144 198 Z" fill="#F8FAFC" stroke="#334155" stroke-width="3.2" />
+                <ellipse cx="82" cy="78" rx="64" ry="50" fill="#FFFFFF" stroke="#334155" stroke-width="3.2" />
+
+                <!-- Gray Tabby Forehead Stripes -->
+                <path d="M72 34 L72 48 M82 32 L82 50 M92 34 L92 48" stroke="#94A3B8" stroke-width="3.5" stroke-linecap="round" />
+
+                <!-- Sassy Raised Eyebrows -->
+                <path d="M36 56 L68 62" stroke="#1E293B" stroke-width="4" stroke-linecap="round" />
+                <path d="M96 58 Q114 46 130 56" stroke="#1E293B" stroke-width="4" stroke-linecap="round" fill="none" />
+
+                <!-- Judgmental Half-Closed Side-Eye Eyes -->
+                <g>
+                  <!-- Left Eye -->
+                  <ellipse cx="54" cy="74" rx="16" ry="12" fill="#FEF9C3" stroke="#1E293B" stroke-width="2.6" />
+                  <path d="M37 70 L71 73 L70 61 L38 61 Z" fill="#E2E8F0" />
+                  <line x1="37" y1="71" x2="71" y2="73" stroke="#1E293B" stroke-width="3" stroke-linecap="round" />
+                  <!-- Side-eye pupil looking hard right/at viewer -->
+                  <circle cx="61" cy="76" r="6" fill="#0F172A" />
+                  <circle cx="63" cy="74" r="2" fill="#FFFFFF" />
+
+                  <!-- Right Eye -->
+                  <ellipse cx="110" cy="74" rx="16" ry="12" fill="#FEF9C3" stroke="#1E293B" stroke-width="2.6" />
+                  <path d="M93 70 L127 73 L126 61 L94 61 Z" fill="#E2E8F0" />
+                  <line x1="93" y1="71" x2="127" y2="73" stroke="#1E293B" stroke-width="3" stroke-linecap="round" />
+                  <circle cx="117" cy="76" r="6" fill="#0F172A" />
+                  <circle cx="119" cy="74" r="2" fill="#FFFFFF" />
+                </g>
+
+                <!-- Cute Pink Nose & Unimpressed Smirk Mouth -->
+                <polygon points="82,84 76,91 88,91" fill="#FB7185" />
+                <path d="M82 91 L82 98 M70 101 Q82 96 98 104" stroke="#1E293B" stroke-width="3" stroke-linecap="round" fill="none" />
+
+                <!-- Whiskers -->
+                <path d="M8 78 L28 82 M6 88 L28 89 M156 78 L136 82 M158 88 L136 89" stroke="#475569" stroke-width="2.2" stroke-linecap="round" />
+
+                <!-- Sweat Drop of Disbelief -->
+                <path d="M148 48 C148 48, 155 58, 155 63 C155 67, 152 70, 148 70 C144 70, 141 67, 141 63 C141 58, 148 48, 148 48 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="1.8" />
+
+                <!-- Left Paw Holding a Drooping Withered Rose 🥀 -->
+                <g transform="translate(-10, 110)">
+                  <!-- Stem drooping down -->
+                  <path d="M36 52 L36 16 Q36 -8 10 -4" stroke="#4D7C0F" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                  <!-- Drooping Withered Rose Head -->
+                  <path d="M12 -4 C2 -12, -8 -2, 0 10 C8 18, 20 8, 12 -4 Z" fill="#9F1239" />
+                  <path d="M6 -1 C0 -6, -4 2, 3 8" stroke="#FDA4AF" stroke-width="1.8" fill="none" />
+                  <!-- Falling Petals from Withered Rose -->
+                  <path d="M4 22 C0 26, 6 32, 9 27 Z" fill="#E11D48" />
+                  <path d="M15 34 C11 38, 17 44, 20 39 Z" fill="#BE123C" />
+                  <!-- Cat Paw -->
+                  <ellipse cx="36" cy="44" rx="16" ry="12" fill="#FFFFFF" stroke="#334155" stroke-width="3" />
+                </g>
+
+                <!-- Right Paw Holding "NGHỈ BÁN" Sign -->
+                <g transform="translate(115, 102)">
+                  <line x1="25" y1="15" x2="25" y2="75" stroke="#78350F" stroke-width="5" stroke-linecap="round" />
+                  <rect x="-18" y="-16" width="88" height="44" rx="8" fill="#FEF3C7" stroke="#92400E" stroke-width="2.8" transform="rotate(5)" />
+                  <text x="26" y="3" text-anchor="middle" fill="#991B1B" font-family="Be Vietnam Pro, sans-serif" font-size="11" font-weight="800" transform="rotate(5)">ĐÓNG CỬA</text>
+                  <text x="26" y="18" text-anchor="middle" fill="#B45309" font-family="Be Vietnam Pro, sans-serif" font-size="9" font-weight="700" transform="rotate(5)">HẸN 20/10 NĂM SAU</text>
+                  <ellipse cx="22" cy="48" rx="16" ry="12" fill="#FFFFFF" stroke="#334155" stroke-width="3" />
+                </g>
+              </g>
+
+              <!-- Counter Table at Bottom -->
+              <rect x="0" y="216" width="360" height="34" fill="#881337" />
+              <line x1="0" y1="216" x2="360" y2="216" stroke="#4C0519" stroke-width="3" />
+              <text x="180" y="237" text-anchor="middle" fill="#FFE4E6" font-family="Be Vietnam Pro, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">QUẦY CHỌN MÓN 20/10 — ĐÃ KÉO CỬA SẮT</text>
+            </svg>
+          </div>
+
+          <div class="meme-bottom-caption" id="meme-bottom-caption">
+            QUA NGÀY 20/10 MỚI TÌM TỚI TÔI SAO?!
+          </div>
+        </div>
+
+        <!-- Funny Roast Speech Bubble -->
+        <div class="expired-roast-bubble" id="expired-roast-bubble">
+          💬 <strong>Chủ vườn nhắn:</strong> "Hôm 20/10 hoa nở tươi rói thì không thấy mặt mũi đâu, nay qua ngày rồi mới mò vào đòi chọn nước hả? 😒🧋"
+        </div>
+
+        <!-- Interactive Funny Buttons (Single-line on Mobile) -->
+        <div class="expired-actions">
+          <button type="button" class="primary-cta-btn expired-excuse-btn" id="btn-expired-excuse">
+            <span>🤡 Bấm Để Bào Chữa (Đổi Meme)</span>
+          </button>
+
+          <button type="button" class="secondary-btn expired-beg-btn" id="btn-expired-beg">
+            <span id="expired-beg-text">🥺 Năn nỉ mở lại quầy (0/5)</span>
+          </button>
+
+          <!-- Creator-only button to exit preview mode when testing before 21/10 -->
+          <button type="button" class="secondary-btn hidden" id="btn-exit-expired-preview">
+            <span>👀 Thoát xem thử (Về lại thiệp 20/10)</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================================================================
+       MODAL 1: CUSTOM ITEM INPUT (FOR WILDCARD DRINK/GIFT)
+       ================================================================== -->
+  <div class="modal-backdrop hidden" id="custom-wish-modal" role="dialog" aria-modal="true" aria-labelledby="wish-modal-title">
+    <div class="modal-card wish-modal-card">
+      <div class="modal-header">
+        <span class="modal-icon-badge">✨</span>
+        <h3 id="wish-modal-title">Món Tự Chọn Của Bạn</h3>
+        <p>Nhập tên đồ uống hoặc món bạn muốn chọn thêm nhé!</p>
+      </div>
+      <div class="modal-body">
+        <input
+          type="text"
+          id="custom-wish-input"
+          class="modal-text-input"
+          maxlength="80"
+          placeholder="VD: Trà Nhãn Sen Size L ít đường / Cà phê sữa đá..."
+        />
+        <div class="wish-suggestions">
+          <span class="suggestion-chip" data-suggest="Trà Nhãn Sen (Size L)">Trà Nhãn Sen</span>
+          <span class="suggestion-chip" data-suggest="Trà Ô Long Dâu Tây Kem Phô Mai">Ô Long Dâu Kem Cheese</span>
+          <span class="suggestion-chip" data-suggest="Đác Cam Nhãn Dừa Đá Xay">Đác Cam Nhãn Dừa</span>
+          <span class="suggestion-chip" data-suggest="Phin Sữa Đá Đậm Đà">Phin Sữa Đá</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="modal-btn cancel" id="btn-cancel-wish">Hủy</button>
+        <button type="button" class="modal-btn confirm" id="btn-save-wish">Xác nhận món</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       MODAL 2: LIVE ORDER TRACKER (HOW YOU KNOW WHAT SHE ORDERED!)
+       ================================================================== -->
+  <div class="modal-backdrop hidden" id="orders-modal" role="dialog" aria-modal="true" aria-labelledby="orders-modal-title">
+    <div class="modal-card customizer-modal-card">
+      <div class="customizer-top-bar">
+        <div>
+          <h3 id="orders-modal-title">📬 Đơn Đặt Món Người Ấy Đã Chọn</h3>
+          <p class="customizer-subtitle">
+            Ngay khi người ấy bấm "Chốt đơn", danh sách món sẽ tự động hiện tại đây!
+          </p>
+        </div>
+        <button type="button" class="close-icon-btn" id="btn-close-orders" aria-label="Đóng">✕</button>
+      </div>
+
+      <div class="customizer-scroll-body">
+        <div class="channel-info-banner">
+          <div class="channel-info-left">
+            <span class="channel-label">🔔 Mã kênh nhận đơn:</span>
+            <code id="display-channel-id">rose2010-vibecode-86032005</code>
+          </div>
+          <button type="button" class="modal-btn secondary" id="btn-refresh-orders">
+            🔄 Làm mới
+          </button>
+        </div>
+
+        <div id="orders-list-container" class="orders-list-container">
+          <p class="orders-empty-state">Đang kiểm tra dữ liệu đơn đặt...</p>
+        </div>
+      </div>
+
+      <div class="customizer-footer">
+        <span class="footer-tip-text">
+          💡 Khi gửi link, nút "Đơn đặt" sẽ tự ẩn để người nhận không biết!
+        </span>
+        <button type="button" class="modal-btn confirm" id="btn-close-orders-bottom">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       MODAL 3: BUILT-IN CONFIGURATOR & SHAREABLE LINK GENERATOR
+       ================================================================== -->
+  <div class="modal-backdrop hidden" id="customizer-modal" role="dialog" aria-modal="true" aria-labelledby="customizer-title">
+    <div class="modal-card customizer-modal-card">
+      <div class="customizer-top-bar">
+        <div>
+          <h3 id="customizer-title">Cấu Hình Menu &amp; Lời Chúc 20/10</h3>
+          <p class="customizer-subtitle">Chỉnh sửa danh sách đồ uống / món quà và tạo Link gửi tặng</p>
+        </div>
+        <button type="button" class="close-icon-btn" id="btn-close-customizer" aria-label="Đóng">✕</button>
+      </div>
+
+      <div class="customizer-scroll-body">
+        <div class="config-grid-2col">
+          <div class="form-group">
+            <label for="cfg-preset">Bộ Menu mẫu có sẵn</label>
+            <select id="cfg-preset" class="modal-text-input">
+              <option value="phuclong">Menu Đồ Uống &amp; Bánh Ngọt (12 món)</option>
+              <option value="gifts2010">Menu Quà Tặng &amp; Đồ Uống 20/10</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cfg-max-select">Số món cho phép chọn</label>
+            <select id="cfg-max-select" class="modal-text-input">
+              <option value="1">Chọn 1 món</option>
+              <option value="2">Chọn 2 món</option>
+              <option value="3" selected>Chọn 3 món (Mặc định)</option>
+              <option value="4">Chọn 4 món</option>
+              <option value="5">Chọn 5 món</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <div class="form-group">
+            <label for="cfg-recipient">Gửi tặng tới (Hiển thị trên thiệp &amp; băng rôn)</label>
+            <input type="text" id="cfg-recipient" class="modal-text-input" maxlength="60" placeholder="VD: Mọi người" />
+          </div>
+
+          <div class="form-group">
+            <label for="cfg-sender">Chữ ký người gửi</label>
+            <input type="text" id="cfg-sender" class="modal-text-input" maxlength="60" placeholder="VD: Lời chúc 20/10 🌹" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cfg-channel">🔔 Mã kênh nhận đơn đặt tự động (Chỉ mình bạn biết để xem đơn):</label>
+          <input type="text" id="cfg-channel" class="modal-text-input" maxlength="50" placeholder="VD: rose2010-vibecode-86032005" />
+        </div>
+
+        <div class="form-group">
+          <label for="cfg-greeting">Tiêu đề lời chúc mở đầu</label>
+          <input type="text" id="cfg-greeting" class="modal-text-input" maxlength="90" />
+        </div>
+
+        <div class="form-group">
+          <label for="cfg-body">Nội dung lời chúc gửi mọi người</label>
+          <textarea id="cfg-body" class="modal-textarea" rows="3" maxlength="450"></textarea>
+        </div>
+
+        <div class="form-divider">
+          <span>Danh sách các món trong Menu (Có thể sửa nhanh hoặc nhập theo dòng)</span>
+        </div>
+
+        <details class="bulk-import-box">
+          <summary>⚡ Nhập nhanh nhiều món cùng lúc bằng văn bản (Bấm để mở)</summary>
+          <div class="bulk-import-inner">
+            <p class="bulk-hint">Mỗi dòng 1 món theo cú pháp: <code>Icon | Tên món | Mô tả ngắn</code> (hoặc chỉ cần gõ <code>Tên món</code> trên mỗi dòng):</p>
+            <textarea id="cfg-bulk-textarea" class="modal-textarea" rows="5" placeholder="🍑 | Trà Đào Cam Sả | Size L ngọt vừa&#10;🧋 | Hồng Trà Sữa Đậm Vị | Đậm vị trà&#10;🫖 | Trà Ô Long Sữa | Thêm kem cheese"></textarea>
+            <button type="button" class="modal-btn secondary" id="btn-apply-bulk-lines" style="margin-top:8px; width:100%;">
+              Cập nhật danh sách món từ ô văn bản này
+            </button>
+          </div>
+        </details>
+
+        <div class="custom-gifts-editor" id="custom-gifts-editor">
+          <!-- Populated dynamically -->
+        </div>
+
+        <button type="button" class="add-gift-row-btn" id="btn-add-custom-gift">
+          + Thêm một món mới vào Menu
+        </button>
+      </div>
+
+      <div class="customizer-footer">
+        <button type="button" class="modal-btn cancel" id="btn-reset-default-cfg">Khôi phục gốc</button>
+        <div class="customizer-footer-right">
+          <button type="button" class="modal-btn secondary" id="btn-apply-cfg">Lưu cấu hình</button>
+          <button type="button" class="modal-btn confirm" id="btn-copy-gift-link">🔗 Copy Link Gửi Tặng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="./gifts-config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

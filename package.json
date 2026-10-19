@@ -1,0 +1,11 @@
+{
+  "name": "rose-boutique-20-10",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web quà tặng 20/10 Ngày Phụ Nữ Việt Nam - Tiệm Quà Hoa Hồng (Chọn 3 món quà)",
+  "scripts": {
+    "start": "python3 -m http.server 3000",
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'Static site ready for Vercel deployment'"
+  }
+}

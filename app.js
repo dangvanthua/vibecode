@@ -101,13 +101,18 @@
 
   function loadInitialConfig() {
     const params = new URLSearchParams(window.location.search);
+    if (params.get("admin") === "1" || params.get("edit") === "1") {
+      document.querySelectorAll(".creator-only-btn").forEach((btn) => {
+        btn.classList.remove("hidden");
+      });
+    } else {
+      document.querySelectorAll(".creator-only-btn").forEach((btn) => {
+        btn.classList.add("hidden");
+      });
+    }
+
     const encoded = params.get("c");
     if (encoded && decodeConfigFromUrlParam(encoded)) {
-      if (!params.get("edit")) {
-        document.querySelectorAll(".creator-only-btn").forEach((btn) => {
-          btn.classList.add("hidden");
-        });
-      }
       return;
     }
 

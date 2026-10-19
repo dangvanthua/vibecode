@@ -16,13 +16,25 @@
   const DEFAULT_CONFIG = JSON.parse(JSON.stringify(window.ROSE_CONFIG));
   let config = JSON.parse(JSON.stringify(window.ROSE_CONFIG));
 
+  function getOrCreateSessionTicketCode() {
+    try {
+      const existing = sessionStorage.getItem("rose_session_ticket_code_2010");
+      if (existing) return existing;
+      const created = "#2010-" + Math.floor(1000 + Math.random() * 9000);
+      sessionStorage.setItem("rose_session_ticket_code_2010", created);
+      return created;
+    } catch (e) {
+      return "#2010-" + Math.floor(1000 + Math.random() * 9000);
+    }
+  }
+
   const state = {
     currentStage: "intro",
     activeCategory: "all",
     selectedIds: [],
     customWishText: "",
     pendingWishGiftId: null,
-    ticketCode: "#2010-" + Math.floor(1000 + Math.random() * 9000),
+    ticketCode: getOrCreateSessionTicketCode(),
     ticketTime: "",
     audioEnabled: true
   };
@@ -117,10 +129,15 @@
     }
 
     try {
+      // Clean up legacy test orders cache from development
+      localStorage.removeItem("rose_orders_history_2010");
       const saved = localStorage.getItem("rose_menu_config_2010_v3");
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.recipientName && Array.isArray(parsed.gifts)) {
+          if (parsed.orderChannelId === "rose2010-vibecode-86032005") {
+            parsed.orderChannelId = "rose2010-vibecode-live-2010";
+          }
           config = parsed;
         }
       }
@@ -128,17 +145,28 @@
   }
 
   // ==========================================================================
-  // 2. SILENT CLOUD ORDER TRACKER (KNOW IMMEDIATELY WHAT SHE PICKED!)
+  // 2. SILENT CLOUD ORDER TRACKER (CLEAN, DEDUPLICATED & MANAGEABLE)
   // ==========================================================================
+  const ORDERS_STORAGE_KEY = "rose_orders_history_2010_v2";
+  const ORDERS_CLEARED_AT_KEY = "rose_orders_cleared_at_2010";
+  const ORDERS_DELETED_IDS_KEY = "rose_orders_deleted_ids_2010";
+
   function getCleanChannelId() {
-    const raw = (config.orderChannelId || DEFAULT_CONFIG.orderChannelId || "rose2010-vibecode-86032005").trim();
-    return raw.replace(/[^a-zA-Z0-9_-]/g, "") || "rose2010-vibecode-86032005";
+    const raw = (
+      config.orderChannelId ||
+      DEFAULT_CONFIG.orderChannelId ||
+      "rose2010-vibecode-live-2010"
+    ).trim();
+    const cleaned = raw.replace(/[^a-zA-Z0-9_-]/g, "") || "rose2010-vibecode-live-2010";
+    return cleaned === "rose2010-vibecode-86032005"
+      ? "rose2010-vibecode-live-2010"
+      : cleaned;
   }
 
   function buildOrderPayload(isNoteUpdate = false) {
     const ordererName =
       ((document.getElementById("orderer-name-input") || {}).value || "").trim() ||
-      "Người nhận giấu tên 💕";
+      "Người nhận 💕";
     const noteText =
       ((document.getElementById("recipient-note-input") || {}).value || "").trim();
 
@@ -154,6 +182,7 @@
       type: "ROSE_2010_ORDER",
       isUpdate: isNoteUpdate,
       ticketCode: state.ticketCode,
+      createdAt: Date.now(),
       time: state.ticketTime || formatCurrentTimestamp(),
       who: ordererName,
       items: chosenItems,
@@ -164,34 +193,32 @@
   async function sendOrderSilentlyToCloud(isNoteUpdate = false) {
     const payload = buildOrderPayload(isNoteUpdate);
 
-    // 1. Save to local history as well
+    // 1. Save/Update in local history (deduplicated by ticketCode)
     try {
-      const localList = JSON.parse(localStorage.getItem("rose_orders_history_2010") || "[]");
+      const localList = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY) || "[]");
       const existingIndex = localList.findIndex((o) => o.ticketCode === payload.ticketCode);
       if (existingIndex !== -1) {
         localList[existingIndex] = payload;
       } else {
         localList.unshift(payload);
       }
-      localStorage.setItem("rose_orders_history_2010", JSON.stringify(localList.slice(0, 50)));
+      localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(localList.slice(0, 50)));
     } catch (e) {}
 
-    // 2. Send silently to ntfy.sh public pub/sub channel (Zero login, CORS enabled, works on Vercel)
+    // 2. Send silently to ntfy.sh public pub/sub channel
     const channelId = getCleanChannelId();
     try {
       await fetch(`https://ntfy.sh/${encodeURIComponent(channelId)}`, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain;charset=UTF-8",
-          "Title": isNoteUpdate ? "Cap nhat ghi chu 20/10" : "Co don chon mon 20/10 moi!"
+          Title: isNoteUpdate ? "Cap nhat ghi chu 20/10" : "Co don chon mon 20/10 moi!"
         },
         body: JSON.stringify(payload)
       });
-    } catch (e) {
-      // Ignore network errors silently
-    }
+    } catch (e) {}
 
-    // 3. Optional custom webhook (Discord / Make / Telegram proxy)
+    // 3. Optional custom webhook
     if (config.customWebhookUrl && config.customWebhookUrl.startsWith("http")) {
       try {
         await fetch(config.customWebhookUrl, {
@@ -206,6 +233,68 @@
     }
   }
 
+  async function clearAllOrdersOnCloud() {
+    const nowTs = Date.now();
+    try {
+      localStorage.removeItem(ORDERS_STORAGE_KEY);
+      localStorage.setItem(ORDERS_CLEARED_AT_KEY, String(nowTs));
+      localStorage.removeItem(ORDERS_DELETED_IDS_KEY);
+    } catch (e) {}
+
+    const channelId = getCleanChannelId();
+    try {
+      await fetch(`https://ntfy.sh/${encodeURIComponent(channelId)}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=UTF-8",
+          Title: "Xoa don cu 20/10"
+        },
+        body: JSON.stringify({
+          type: "ROSE_2010_CLEAR_ALL",
+          clearedAt: nowTs
+        })
+      });
+    } catch (e) {}
+
+    showToast("🗑️ Đã xóa sạch toàn bộ đơn cũ!");
+    fetchAndRenderCloudOrders();
+  }
+
+  async function deleteSingleOrderOnCloud(ticketCode) {
+    if (!ticketCode) return;
+    try {
+      const localList = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY) || "[]").filter(
+        (o) => o && o.ticketCode !== ticketCode
+      );
+      localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(localList));
+
+      const deletedIds = JSON.parse(localStorage.getItem(ORDERS_DELETED_IDS_KEY) || "[]");
+      if (!deletedIds.includes(ticketCode)) {
+        deletedIds.push(ticketCode);
+        localStorage.setItem(ORDERS_DELETED_IDS_KEY, JSON.stringify(deletedIds));
+      }
+    } catch (e) {}
+
+    const channelId = getCleanChannelId();
+    try {
+      await fetch(`https://ntfy.sh/${encodeURIComponent(channelId)}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=UTF-8",
+          Title: "Xoa 1 don 20/10"
+        },
+        body: JSON.stringify({
+          type: "ROSE_2010_DELETE_ONE",
+          ticketCode,
+          deletedAt: Date.now()
+        })
+      });
+    } catch (e) {}
+
+    showToast(`🗑️ Đã xóa đơn ${ticketCode}!`);
+    fetchAndRenderCloudOrders();
+  }
+
   async function fetchAndRenderCloudOrders() {
     const container = document.getElementById("orders-list-container");
     const channelBadge = document.getElementById("display-channel-id");
@@ -216,16 +305,27 @@
     container.innerHTML = `<p class="orders-empty-state">⏳ Đang tải danh sách món người ấy đã chọn...</p>`;
 
     const mergedMap = new Map();
+    let clearedAt = Number(localStorage.getItem(ORDERS_CLEARED_AT_KEY) || 0);
+    const deletedSet = new Set();
 
-    // Load local orders first
     try {
-      const localList = JSON.parse(localStorage.getItem("rose_orders_history_2010") || "[]");
+      const savedDeleted = JSON.parse(localStorage.getItem(ORDERS_DELETED_IDS_KEY) || "[]");
+      savedDeleted.forEach((id) => deletedSet.add(id));
+    } catch (e) {}
+
+    // 1. Load local orders first
+    try {
+      const localList = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY) || "[]");
       localList.forEach((o) => {
-        if (o && o.ticketCode) mergedMap.set(o.ticketCode, o);
+        if (o && o.ticketCode && !deletedSet.has(o.ticketCode)) {
+          if (!o.createdAt || o.createdAt > clearedAt) {
+            mergedMap.set(o.ticketCode, o);
+          }
+        }
       });
     } catch (e) {}
 
-    // Fetch live cloud orders from ntfy.sh JSON feed
+    // 2. Fetch live cloud orders & delete commands from ntfy.sh JSON feed
     try {
       const res = await fetch(
         `https://ntfy.sh/${encodeURIComponent(channelId)}/json?poll=1&since=72h`,
@@ -239,8 +339,22 @@
             const event = JSON.parse(line);
             if (event && event.event === "message" && event.message) {
               const data = JSON.parse(event.message);
-              if (data && data.type === "ROSE_2010_ORDER" && data.ticketCode) {
-                mergedMap.set(data.ticketCode, data);
+              const eventTimeMs = (event.time || 0) * 1000;
+
+              if (data && data.type === "ROSE_2010_CLEAR_ALL") {
+                const cTime = data.clearedAt || eventTimeMs;
+                if (cTime >= clearedAt) {
+                  clearedAt = cTime;
+                  mergedMap.clear();
+                }
+              } else if (data && data.type === "ROSE_2010_DELETE_ONE" && data.ticketCode) {
+                deletedSet.add(data.ticketCode);
+                mergedMap.delete(data.ticketCode);
+              } else if (data && data.type === "ROSE_2010_ORDER" && data.ticketCode) {
+                const ordTime = data.createdAt || eventTimeMs;
+                if (ordTime > clearedAt && !deletedSet.has(data.ticketCode)) {
+                  mergedMap.set(data.ticketCode, data);
+                }
               }
             }
           } catch (innerErr) {}
@@ -250,15 +364,17 @@
       console.warn("Could not fetch remote orders:", err);
     }
 
-    const orders = Array.from(mergedMap.values()).reverse();
+    const orders = Array.from(mergedMap.values()).sort(
+      (a, b) => (b.createdAt || 0) - (a.createdAt || 0)
+    );
 
     if (orders.length === 0) {
       container.innerHTML = `
         <div class="orders-empty-state">
           <p style="font-size: 1.5rem; margin-bottom: 8px;">🌹</p>
-          <p><strong>Chưa có lượt chốt món nào trên kênh này.</strong></p>
+          <p><strong>Danh sách đơn đang trống (Chưa có đơn mới).</strong></p>
           <p style="margin-top: 6px; font-size: 0.78rem;">
-            Ngay khi người ấy chọn món (từ 1 đến 3 món) và bấm <strong>"Chốt đơn"</strong>, kết quả sẽ tự động hiện ngay tại đây!
+            Ngay khi người ấy chọn món (từ 1 đến 3 món) và bấm <strong>"Chốt đơn"</strong>, đơn hàng sẽ tự động hiện ngay tại đây!
           </p>
         </div>
       `;
@@ -279,6 +395,8 @@
         )
         .join("");
 
+      const statusText = ord.isUpdate ? "✨ Đã cập nhật ghi chú" : "✓ Đã chốt món";
+
       card.innerHTML = `
         <div class="order-record-top">
           <span class="order-record-who">👤 ${escapeHtml(ord.who || "Người nhận")} (${escapeHtml(
@@ -294,7 +412,32 @@
             ? `<div class="order-record-note">📝 Ghi chú: "${escapeHtml(ord.note)}"</div>`
             : ""
         }
+        <div class="order-record-actions">
+          <span class="order-status-tag">${statusText}</span>
+          <div class="order-action-btns">
+            <button type="button" class="order-card-btn copy-ord-btn">📋 Copy đơn</button>
+            <button type="button" class="order-card-btn delete del-ord-btn">✕ Xóa</button>
+          </div>
+        </div>
       `;
+
+      card.querySelector(".copy-ord-btn").addEventListener("click", () => {
+        const text = [
+          `🌹 ĐƠN QUÀ 20/10 (${ord.ticketCode})`,
+          `👤 Người nhận: ${ord.who || "Người nhận"}`,
+          `🕒 Thời gian: ${ord.time || ""}`,
+          `🧋 Món đã chọn:\n${(ord.items || []).map((it, i) => `  ${i + 1}. ${it}`).join("\n")}`,
+          ord.note ? `📝 Ghi chú: ${ord.note}` : ""
+        ]
+          .filter(Boolean)
+          .join("\n");
+        copyTextToClipboard(text);
+      });
+
+      card.querySelector(".del-ord-btn").addEventListener("click", () => {
+        deleteSingleOrderOnCloud(ord.ticketCode);
+      });
+
       container.appendChild(card);
     });
   }
@@ -2143,6 +2286,12 @@
     document.getElementById("btn-refresh-orders").addEventListener("click", () => {
       fetchAndRenderCloudOrders();
     });
+    const clearAllOrdersBtn = document.getElementById("btn-clear-all-orders");
+    if (clearAllOrdersBtn) {
+      clearAllOrdersBtn.addEventListener("click", () => {
+        clearAllOrdersOnCloud();
+      });
+    }
     document.getElementById("btn-close-orders").addEventListener("click", () => {
       document.getElementById("orders-modal").classList.add("hidden");
     });

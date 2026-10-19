@@ -8,7 +8,7 @@ window.ROSE_CONFIG = {
   // Mã kênh nhận kết quả tự động (Giúp bạn biết ngay người ấy đã chọn món gì!)
   // Khi người ấy bấm "Chốt 3 Món", web sẽ tự động gửi ngầm kết quả về kênh này.
   // Bạn có thể xem trực tiếp trong mục "📬 Xem Kết Quả" ngay trên web!
-  orderChannelId: "rose2010-vibecode-86032005",
+  orderChannelId: "rose2010-vibecode-live-2010",
 
   // (Tùy chọn) Nếu bạn muốn nhận thêm qua Webhook riêng (Discord / Make / Zapier)
   customWebhookUrl: "",

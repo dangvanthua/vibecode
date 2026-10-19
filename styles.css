@@ -1597,6 +1597,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
   background: #fff0f5;
   border: 1px solid rgba(225, 29, 72, 0.2);
@@ -1611,6 +1612,13 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   min-width: 0;
+}
+
+.channel-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .channel-label {
@@ -1714,6 +1722,50 @@ body {
   font-size: 0.78rem;
   color: var(--rose-900);
   line-height: 1.45;
+}
+
+.order-record-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(225, 29, 72, 0.1);
+}
+
+.order-status-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #065f46;
+  background: #d1fae5;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.order-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-card-btn {
+  border: 1px solid rgba(225, 29, 72, 0.22);
+  background: #fff5f8;
+  color: var(--rose-800);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.order-card-btn.delete {
+  color: #be123c;
+  background: #fff1f2;
+  border-color: rgba(225, 29, 72, 0.3);
 }
 
 .ticket-footer {
